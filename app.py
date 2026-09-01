@@ -7,10 +7,11 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
-# Initializing Gemini LLM
+# Initializing with loading keys of TMDB, and gemini api
 load_dotenv("key.env")
 
 api_key: str | None = os.getenv("GEMINI_API_KEY")  
+tmdb_api_key: str | None = os.getenv("TMDB_API_KEY")  
 
 if api_key is None:
     raise ValueError("The key was not found")
