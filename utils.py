@@ -3,34 +3,37 @@ import requests
 
 
 def search_movie(tmdb_api_key: str | None, movie_title: str, release_year: int, ):
-    """
-        Return the poster image link for a movie.
+    """Search TMDB for a movie matching the supplied title and release year."""
 
-        Args:
-            
+    if not tmdb_api_key:
+        raise ValueError("TMDB API key was not found.")
 
-        Returns:
-            dict[str, Any]
-    """
+    url = "https://api.themoviedb.org/3/search/movie"
 
-    if tmdb_api_key is None:
-        raise ValueError("TMDB api key not found")
-
-    url: str = "https://api.themoviedb.org/3/search/movie"
-
-    headers: dict[str, str] = {
-        "Authorization": f'Bearer {tmdb_api_key}',
-        "accept": "application/json"
+    headers = {
+        "accept": "application/json",
     }
 
-    params: dict[str, str | int] = {
+    params: dict[str, str | int | bool] = {
+        "api_key": tmdb_api_key,
         "query": movie_title,
-        "year": release_year,
-        "language": "en-US"
+        "primary_release_year": release_year,
+        "language": "en-US",
+        "include_adult": False,
     }
 
-    response = requests.get(url=url, params=params, headers=headers)
+    response = requests.get(
+        url=url,
+        params=params,
+        headers=headers,
+        timeout=10,
+    )
+    response.raise_for_status()
 
-    print(response)
+    data: dict[str, Any] = response.json()
+    results = data.get("results")
 
+    if not isinstance(results, list) or not results:
+        return None
 
+    return results[0]
