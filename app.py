@@ -15,6 +15,13 @@ load_dotenv("key.env")
 gemini_api_key: str | None = os.getenv("GEMINI_API_KEY")  
 tmdb_api_key: str | None = os.getenv("TMDB_API_KEY")  
 
+# Streamlit importing keys
+if gemini_api_key is None:
+    gemini_api_key = st.secrets["GEMINI_API_KEY"]
+
+if tmdb_api_key is None:
+    tmdb_api_key = st.secrets["TMDB_API_KEY"]
+
 st.set_page_config(
     page_title="Movie Recommender",
     layout="centered"
