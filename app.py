@@ -6,6 +6,7 @@ from typing import Any
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
+from utils import search_movie
 
 # Initializing with loading keys of TMDB, and gemini api
 load_dotenv("key.env")
@@ -69,3 +70,6 @@ if not movie_query is None:
         st.write("Year:", movie.release_year)
         st.write("Rating:", movie.rating)
         st.write("Synopsis:", movie.synopsis)
+        
+        search_movie(tmdb_api_key, movie.title, movie.release_year)
+   
