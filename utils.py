@@ -2,7 +2,7 @@ from typing import Any
 import requests
 
 
-def search_movie(tmdb_api_key: str, movie_title: str, release_year: int, ):
+def search_movie(tmdb_api_key: str | None, movie_title: str, release_year: int, ):
     """
         Return the poster image link for a movie.
 
@@ -12,6 +12,9 @@ def search_movie(tmdb_api_key: str, movie_title: str, release_year: int, ):
         Returns:
             dict[str, Any]
     """
+
+    if tmdb_api_key is None:
+        raise ValueError("TMDB api key not found")
 
     url: str = "https://api.themoviedb.org/3/search/movie"
 
@@ -26,6 +29,8 @@ def search_movie(tmdb_api_key: str, movie_title: str, release_year: int, ):
         "language": "en-US"
     }
 
-    requests.get(url=url, params=params, headers=headers)
+    response = requests.get(url=url, params=params, headers=headers)
 
-    
+    print(response)
+
+

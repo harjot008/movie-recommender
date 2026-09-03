@@ -1,3 +1,5 @@
 .env
 key.env
 test.py
+__pycache__/
+*.pyc
